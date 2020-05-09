@@ -14,6 +14,6 @@ namespace MeraServer.Models
 
     public class ArticlesDbContext : DbContext
     {
-        public DbSet<Article> TextContainers { get; set; }
+        public DbSet<Article> Articles { get; set; }
     }
 }
