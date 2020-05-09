@@ -8,17 +8,19 @@ using System.Web.Http;
 using DTOs;
 using System.Data.Common;
 using MeraServer.Services;
+using MeraServer.Models;
+using System.Threading.Tasks;
 
 namespace MeraServer.Controllers.Api
 {
     public class WordsController : ApiController
     {
-        private Dictionary<string, string> TextDb;
+        DbManager db;
         TextService textService;
 
         public WordsController()
         {
-            TextDb = new Dictionary<string, string>();
+            db = new DbManager();
             textService = new TextService();
         }
         
@@ -34,13 +36,14 @@ namespace MeraServer.Controllers.Api
             }
         }
 
-        // POST /api/words/AddNewText
+        // POST /api/words/AddNewArticle
         [HttpPost]
-        public void AddNewText (TextContainer text)
+        public async Task AddNewArticle (TextContainer text)
         {
             if(ModelState.IsValid)
             {
-                TextDb.Add(text.Subject, text.Text);
+                Article article = new Article() { Subject = text.Subject, Text = text.Text};
+                await db.AddArticleToDb(article);
             }
             else
             {
@@ -48,23 +51,45 @@ namespace MeraServer.Controllers.Api
             }
         }
 
+        // GET /api/words/GetArticleBySubject
+        public async Task<TextContainer> GetArticleBySubject(string subject)
+        {
+            TextContainer text = null;
+            if (!string.IsNullOrEmpty(subject))
+            {
+                Article article = await db.GetArticleBySubject(subject);
+                if (article != null)
+                {
+                    text = new TextContainer()
+                    {
+                        Subject = article.Subject,
+                        Text = article.Text,
+                    };                    
+                    return text;
+                } else
+                {
+                    throw new HttpResponseException(HttpStatusCode.NotFound);
+                }
+            } else
+            {
+
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+        }
+
         // GET /api/words/GetTextsCatalog
-        public Catalog GetTextsCatalog()
+        public async Task<Catalog> GetTextsCatalog()
         {
             Catalog result = new Catalog();
-
-            if (TextDb.Count == 0)
+            List<string> subjectList = await db.GetSubjectList();
+            if (subjectList.Count == 0)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
             else
             {
-                foreach (KeyValuePair<string, string> subject in TextDb)
-                {
-                    result.TextSubjectsList.Add(subject.Key);
-                }
+                result.TextSubjectsList = subjectList;
             }
-
 
             return result;
             
