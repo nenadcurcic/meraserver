@@ -23,8 +23,9 @@ namespace MeraServer.Controllers.Api
             db = new DbManager();
             textService = new TextService();
         }
-        
-        // GET /api/words
+
+        // GET /api/words/GetWordsCount
+        [Route("api/words/GetWordsCount")]
         public int GetWordsCount(string word)
         {
             if (!word.IsNullOrWhiteSpace())
@@ -38,6 +39,7 @@ namespace MeraServer.Controllers.Api
 
         // POST /api/words/AddNewArticle
         [HttpPost]
+        [Route("api/words/AddNewArticle")]
         public async Task AddNewArticle (TextContainer text)
         {
             if(ModelState.IsValid)
@@ -52,6 +54,7 @@ namespace MeraServer.Controllers.Api
         }
 
         // GET /api/words/GetArticleBySubject
+        [Route("api/words/GetArticleBySubject")]
         public async Task<TextContainer> GetArticleBySubject(string subject)
         {
             TextContainer text = null;
@@ -78,6 +81,7 @@ namespace MeraServer.Controllers.Api
         }
 
         // GET /api/words/GetTextsCatalog
+        [Route("api/words/GetTextsCatalog")]
         public async Task<Catalog> GetTextsCatalog()
         {
             Catalog result = new Catalog();
