@@ -5,6 +5,7 @@ namespace MeraServer.Models
 {
     public class Article
     {
+        public int Id { get; set; }
         [Required]
         public string Subject { get; set; }
 
