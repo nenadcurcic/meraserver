@@ -29,8 +29,9 @@ namespace MeraServer.Controllers.Api
         public int GetWordsCount(string word)
         {
             if (!word.IsNullOrWhiteSpace())
-            { 
-                return textService.WordCounter(word);
+            {
+                int res = textService.WordCounter(word);
+                return res;
             } else
             {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);

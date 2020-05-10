@@ -19,6 +19,7 @@ namespace MeraServer.Services
         //Adding new article to db
         internal async Task AddArticleToDb(Article article)
         {
+            //TODO: Add check if subject already exist
             await Task.Run(() => { 
                 db.Articles.Add(article);
                 db.SaveChanges();
