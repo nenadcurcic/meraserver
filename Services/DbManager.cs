@@ -1,16 +1,13 @@
-﻿using DTOs;
-using MeraServer.Models;
-using System;
+﻿using MeraServer.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace MeraServer.Services
 {
     internal class DbManager
     {
-        private ArticlesDbContext db;
+        private readonly ArticlesDbContext db;
         internal DbManager()
         {
             db = new ArticlesDbContext();
@@ -38,6 +35,7 @@ namespace MeraServer.Services
             return article;
         }
 
+        //Get list of articles subjects from db
         internal async Task<List<string>> GetSubjectList()
         {
             List<string> subjectList = new List<string>();

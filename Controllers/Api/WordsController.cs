@@ -1,12 +1,8 @@
 ﻿using Microsoft.Ajax.Utilities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using DTOs;
-using System.Data.Common;
 using MeraServer.Services;
 using MeraServer.Models;
 using System.Threading.Tasks;
@@ -15,8 +11,8 @@ namespace MeraServer.Controllers.Api
 {
     public class WordsController : ApiController
     {
-        DbManager db;
-        TextService textService;
+        private readonly DbManager db;
+        private readonly TextService textService;
 
         public WordsController()
         {
@@ -95,11 +91,7 @@ namespace MeraServer.Controllers.Api
             {
                 result.TextSubjectsList = subjectList;
             }
-
             return result;
-            
         }
-
-       
     }
 }
